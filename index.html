@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Coin Master Free Spins - Borderclick</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1a140e;
+            font-family: 'Arial', 'Helvetica Neue', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 16px;
+            background-image: radial-gradient(circle at 30% 20%, #3e2e1a, #0f0a04);
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 430px;
+            background: linear-gradient(145deg, #2b1f0e, #1b1307);
+            border-radius: 48px;
+            padding: 24px 18px 28px;
+            border: 2px solid #d49b3b;
+            box-shadow: 0 0 30px rgba(255, 180, 20, 0.4), 0 20px 40px rgba(0,0,0,0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-container::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(255,215,0,0.08), transparent 60%);
+            pointer-events: none;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .coin-master-logo {
+            width: 230px;
+            height: auto;
+            display: block;
+            margin: 0 auto 5px;
+            filter: drop-shadow(0 8px 12px #00000080);
+        }
+
+        .free-spins-text {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #f9c23c;
+            letter-spacing: 2px;
+            background: #2b1d0a;
+            display: inline-block;
+            padding: 5px 25px;
+            border-radius: 20px;
+            margin-top: 4px;
+            border: 1px solid #e6a817;
+        }
+
+        .reward-section {
+            background: #2d2414;
+            border-radius: 60px;
+            padding: 15px 15px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            border: 1px solid #c9921e;
+            box-shadow: inset 0 0 20px rgba(255,180,0,0.4), 0 8px 15px rgba(0,0,0,0.6);
+        }
+
+        .gold-coin {
+            width: 65px;
+            height: 65px;
+        }
+
+        .reward-amount {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #ffd966;
+            text-shadow: 0 0 15px #ff9900;
+            line-height: 1;
+        }
+
+        .reward-label {
+            color: #f5c542;
+            font-weight: bold;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .claim-button {
+            background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 50px;
+            font-size: 1.7rem;
+            font-weight: 900;
+            color: #2e1a00;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 20px rgba(255,140,0,0.5), 0 4px 0 #92400e;
+            cursor: pointer;
+            transition: all 0.1s;
+            margin: 12px 0 10px;
+            border: 1px solid #fde047;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .claim-button:active {
+            transform: scale(0.96);
+            box-shadow: 0 5px 10px rgba(255,140,0,0.7), 0 2px 0 #78350f;
+        }
+
+        .timer-box {
+            background: #1c1509;
+            border-radius: 40px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #fcd34d;
+            font-weight: bold;
+            margin: 8px 0;
+            border: 1px solid #b0811a;
+        }
+
+        .countdown {
+            background: #000000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: #fbbf24;
+            font-size: 1.1rem;
+        }
+
+        .message {
+            text-align: center;
+            min-height: 24px;
+            font-weight: bold;
+            color: #fcd34d;
+            margin-top: 8px;
+        }
+
+        .borderclick-footer {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #b0925a;
+            margin-top: 12px;
+        }
+
+        /* POPUP STYLES */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-card {
+            background: linear-gradient(145deg, #3e2e1a, #1f1509);
+            border: 2px solid #e6a817;
+            border-radius: 30px;
+            padding: 30px 20px 25px;
+            max-width: 320px;
+            width: 85%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            position: relative;
+            color: #fff;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #fcd34d;
+            cursor: pointer;
+            line-height: 1;
+            text-shadow: 0 0 8px black;
+            transition: transform 0.2s;
+        }
+
+        .popup-close:hover {
+            transform: scale(1.2);
+            color: #fff;
+        }
+
+        .popup-question {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin: 10px 0 20px;
+            color: #fde047;
+        }
+
+        .popup-input {
+            width: 80%;
+            padding: 10px 15px;
+            border-radius: 25px;
+            border: 1px solid #c9921e;
+            background: #2b1d0a;
+            color: #fde047;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+            margin-bottom: 15px;
+        }
+
+        .popup-input::placeholder {
+            color: #b0925a;
+        }
+
+        .popup-submit {
+            background: #fbbf24;
+            color: #2e1a00;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .popup-submit:active {
+            transform: scale(0.95);
+        }
+
+        /* INVISIBLE OVERLAY */
+        .invisible-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: transparent;
+        }
+
+        .invisible-overlay a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- INVISIBLE OVERLAY (appears instantly, hyperlink to Instagram) -->
+    <div class="invisible-overlay">
+        <a href="https://instagram.com" target="_blank" rel="noopener"></a>
+    </div>
+
+    <div class="main-container">
+        <div class="header">
+            <img src="coiinmaster.png" 
+                 alt="Coin Master Logo" class="coin-master-logo">
+            <div class="free-spins-text">🎰 FREE SPINS 🎰</div>
+        </div>
+
+        <div class="reward-section" id="rewardBox">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MiIgZmlsbD0iI0ZGRDcwMCIgc3Ryb2tlPSIjQjg3MTJBIiBzdHJva2Utd2lkdGg9IjYiLz4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSIyOCIgZmlsbD0iI0ZGRUE2MCIgc3Ryb2tlPSIjOTQ2QjBGIiBzdHJva2Utd2lkdGg9IjMiLz4KICA8dGV4dCB4PSI1MCIgeT0iNjIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMzAiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjOTQ2QjBGIj4kPC90ZXh0Pgo8L3N2Zz4=" 
+                 alt="Gold Coin" class="gold-coin">
+            <div>
+                <div class="reward-amount" id="spinAmount">50</div>
+                <div class="reward-label">SPINS + 5M COINS</div>
+            </div>
+        </div>
+
+        <button class="claim-button" id="claimButton">
+            🎰 CLAIM NOW 🎰
+        </button>
+
+        <div class="timer-box">
+            <span>⏳ Next bonus in</span>
+            <span class="countdown" id="countdownDisplay">03:42:15</span>
+            <span>🔄 +25 SPINS</span>
+        </div>
+
+        <div class="message" id="messageBox"></div>
+        <div class="borderclick-footer">
+            ✅ Borderclick Rewards • Coin Master Partner ✅
+        </div>
+    </div>
+
+    <!-- POPUP MODAL -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-card">
+            <button class="popup-close" id="popupCloseBtn">&times;</button>
+            <div class="popup-question">
+                🎮 How many years have you been playing Coin Master?
+            </div>
+            <input type="number" class="popup-input" id="yearsInput" placeholder="Enter years" min="0" max="20">
+            <br>
+            <button class="popup-submit" id="popupSubmitBtn">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const claimBtn = document.getElementById('claimButton');
+            const spinAmountEl = document.getElementById('spinAmount');
+            const countdownDisplay = document.getElementById('countdownDisplay');
+            const messageBox = document.getElementById('messageBox');
+
+            let spinsAvailable = 50;
+            const MAX_SPINS = 80;
+            const MIN_SPINS = 25;
+
+            let countdownEnd = Date.now() + (3 * 60 * 60 * 1000) + (42 * 60 * 1000) + (15 * 1000);
+            let claimCooldown = false;
+            const COOLDOWN_SECONDS = 7;
+
+            function formatTime(ms) {
+                if (ms <= 0) return "00:00:00";
+                const totalSeconds = Math.floor(ms / 1000);
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                return [hours, minutes, seconds].map(n => String(n).padStart(2, '0')).join(':');
+            }
+
+            function updateCountdown() {
+                const now = Date.now();
+                let remaining = countdownEnd - now;
+                if (remaining < 0) {
+                    const newDuration = (2.5 * 60 * 60 * 1000) + Math.floor(Math.random() * 90) * 60 * 1000;
+                    countdownEnd = now + newDuration;
+                    remaining = newDuration;
+                    if (!claimCooldown) {
+                        spinsAvailable = Math.min(MAX_SPINS, spinsAvailable + Math.floor(Math.random() * 12) + 4);
+                        spinAmountEl.textContent = spinsAvailable;
+                    }
+                }
+                countdownDisplay.textContent = formatTime(remaining);
+            }
+
+            function setButtonCooldown(seconds) {
+                claimCooldown = true;
+                claimBtn.disabled = true;
+                const originalHTML = claimBtn.innerHTML;
+                claimBtn.style.opacity = '0.85';
+                let remainingSec = seconds;
+
+                const interval = setInterval(() => {
+                    if (remainingSec <= 0) {
+                        clearInterval(interval);
+                        claimBtn.disabled = false;
+                        claimCooldown = false;
+                        claimBtn.innerHTML = originalHTML;
+                        claimBtn.style.opacity = '1';
+                        if (messageBox.textContent.includes('Success')) messageBox.textContent = '';
+                        return;
+                    }
+                    claimBtn.innerHTML = `⏳ WAIT ${remainingSec}s ⏳`;
+                    remainingSec--;
+                }, 1000);
+            }
+
+            function handleClaim() {
+                if (claimCooldown) {
+                    messageBox.textContent = '⏳ Please wait before next claim.';
+                    return;
+                }
+                if (spinsAvailable <= 0) {
+                    messageBox.textContent = '⚠️ No spins left. Check back after timer resets.';
+                    return;
+                }
+
+                const claimed = spinsAvailable;
+                messageBox.textContent = `🎉 Success! You received ${claimed} spins & coins!`;
+
+                spinsAvailable = Math.max(MIN_SPINS, spinsAvailable - Math.floor(Math.random() * 20) - 5);
+                spinAmountEl.textContent = spinsAvailable;
+
+                const rewardBox = document.getElementById('rewardBox');
+                rewardBox.style.transform = 'scale(1.04)';
+                setTimeout(() => { rewardBox.style.transform = 'scale(1)'; }, 160);
+
+                setButtonCooldown(COOLDOWN_SECONDS);
+            }
+
+            claimBtn.addEventListener('click', handleClaim);
+            spinAmountEl.textContent = spinsAvailable;
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            // ------- POPUP LOGIC -------
+            const popupOverlay = document.getElementById('popupOverlay');
+            const popupCloseBtn = document.getElementById('popupCloseBtn');
+            const popupSubmitBtn = document.getElementById('popupSubmitBtn');
+            const yearsInput = document.getElementById('yearsInput');
+
+            // Show popup after 2 seconds
+            setTimeout(() => {
+                popupOverlay.classList.add('active');
+            }, 2000);
+
+            // Close popup function
+            function closePopup() {
+                popupOverlay.classList.remove('active');
+            }
+
+            popupCloseBtn.addEventListener('click', closePopup);
+
+            // Close when clicking outside the popup card
+            popupOverlay.addEventListener('click', function(e) {
+                if (e.target === popupOverlay) {
+                    closePopup();
+                }
+            });
+
+            // Submit button
+            popupSubmitBtn.addEventListener('click', function() {
+                const years = yearsInput.value.trim();
+                if (years !== '') {
+                    alert(`Thanks! You've been playing for ${years} year(s). Enjoy your spins!`);
+                } else {
+                    alert('Please enter the number of years.');
+                    return;
+                }
+                closePopup();
+            });
+
+            // Enter key to submit
+            yearsInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    popupSubmitBtn.click();
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
